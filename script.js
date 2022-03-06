@@ -117,3 +117,19 @@ resolveAllPromise([
     Promise.resolve('Javascript'),
     showText('hi', 10)
 ]).then(res => console.log('Promise All', res))
+
+//Debounce Method for React
+const myDobounce = (cb, time) => {
+    let timer;
+    return function (...args) {
+        if (timer) clearTimeout(timer)
+
+        timer = setTimeout(() => {
+            cb(...args)
+        }, time)
+    }
+}
+
+const handleChange = myDobounce((event) => {
+    // console.log(event.target.value)
+}, 1000)
