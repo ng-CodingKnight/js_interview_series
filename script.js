@@ -25,7 +25,7 @@ console.log('flaten Array', customFlatArray(arr, 2))
 for (var i = 0; i < 3; i++) {
     function timer(num) {
         setTimeout(() => {
-            console.log(num)
+            //console.log(num)
         }, num * 1000)
     }
     timer(i);
@@ -133,3 +133,84 @@ const myDobounce = (cb, time) => {
 const handleChange = myDobounce((event) => {
     // console.log(event.target.value)
 }, 1000)
+
+//Custom Reactive Form 
+
+// this method works in Angular Reactive Forms
+
+// forbiddenNameValidator(names) : Function {
+//     return (control) : {[key : string] : any} | null => {
+//         const value = control.value;
+
+//         const forbidden = names.some(name => name.trim().toLowerCase() == value.trim().toLowerCase())
+
+//         return forbidden ? { 'DuplicateName' : value } : null;
+//     }
+// }
+
+//Memoiz Function
+
+const myMemioz = (fn, context) => {
+    let res = {}
+
+    return function (...args) {
+        let argCache = JSON.stringify(args);
+
+        if (!res[argCache]) {
+            res[argCache] = fn.call(context || this, ...args)
+        }
+
+        return res[argCache]
+    }
+}
+
+const clumsyProduct = (num1, num2) => {
+    for (i = 0; i < 100000; i++) { }
+
+    return num1 * num2
+}
+
+const memoizProduct = myMemioz(clumsyProduct)
+
+console.time('First Call')
+console.log(memoizProduct(5, 6))
+console.timeEnd('First Call')
+
+console.time('Second Call')
+console.log(memoizProduct(5, 6))
+console.timeEnd('Second Call')
+
+
+//Question based on Event Loop
+
+console.log("a")
+setTimeout(() => { console.log('set') }, 0);
+Promise.resolve(() => console.log("pro")).then((res) => res());
+console.log('b')
+
+
+//Implement this code 
+
+const calc = {
+    total: 0,
+    add(a) {
+        this.total += a
+
+        return this
+    },
+    substract(a) {
+        this.total -= a
+
+        return this
+    },
+    multiply(a) {
+        this.total *= a
+
+        return this
+    }
+
+}
+
+const result = calc.add(10).substract(5).multiply(10).add(10);
+
+console.log('Chain Airthmetic Calculation', result.total)
